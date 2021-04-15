@@ -26,7 +26,7 @@ bool BaseObject::LoadImg(const std::string path,SDL_Renderer* screen )
     SDL_Texture* newTexture = NULL;
     SDL_Surface* loadSurface = IMG_Load( path.c_str());
     if( loadSurface != NULL ) {
-        // k can khi dung anh k nen
+        // clear background of picture
         //SDL_SetColorKey( loadSurface,SDL_TRUE,SDL_MapRGB(loadSurface->format, COLOR_KEY_R, COLOR_KEY_G, COLOR_KEY_B));
         newTexture = SDL_CreateTextureFromSurface(screen, loadSurface );
         if(newTexture != NULL) {

@@ -11,7 +11,7 @@
 	<SDL_ttf.h>
 	<vector>
 
-1618372356 source:c:\users\admin\onedrive\máy tính\chickenshoot\shoot\main.cpp
+1618502936 source:c:\users\admin\onedrive\máy tính\chickenshoot\shoot\main.cpp
 	"BaseObject.h"
 	"CommonFunction.h"
 	"MainObject.h"
@@ -27,7 +27,7 @@
 1618055526 c:\users\admin\onedrive\máy tính\chickenshoot\shoot\baseobject.h
 	"CommonFunction.h"
 
-1618056641 source:c:\users\admin\onedrive\máy tính\chickenshoot\shoot\baseobject.cpp
+1618503363 source:c:\users\admin\onedrive\máy tính\chickenshoot\shoot\baseobject.cpp
 	"BaseObject.h"
 
 1616206428 source:c:\users\admin\onedrive\máy tính\chickenshoot\shoot\map.cpp
@@ -52,7 +52,7 @@
 1618147812 source:c:\users\admin\onedrive\máy tính\chickenshoot\shoot\threat.cpp
 	"Threat.h"
 
-1618147783 c:\users\admin\onedrive\máy tính\chickenshoot\shoot\threat.h
+1618497629 c:\users\admin\onedrive\máy tính\chickenshoot\shoot\threat.h
 	"CommonFunction.h"
 	"BaseObject.h"
 	"Amo.h"
@@ -77,7 +77,7 @@
 1618331329 source:c:\users\admin\onedrive\máy tính\chickenshoot\shoot\menu.cpp
 	"Menu.h"
 
-1618372587 c:\users\admin\onedrive\máy tính\chickenshoot\shoot\menu.h
+1618479196 c:\users\admin\onedrive\máy tính\chickenshoot\shoot\menu.h
 	"CommonFunction.h"
 	"BaseObject.h"
 

@@ -129,13 +129,12 @@ int game()
     Bkgmenu.SetRect( (SCREEN_WIDTH - WIDTH_BG_MENU) / 2, (SCREEN_HEIGHT - HEIGHT_BG_MENU ) / 2);
     BaseObject optionPlay, optionQuit ;
     // option
-    optionPlay.SetRect( Bkgmenu.GetRect().x + (WIDTH_BG_MENU - WIDTH_CHOSE) / 2 - 20  ,
-                               Bkgmenu.GetRect().y + (HEIGHT_BG_MENU /2  - HEIGHT_CHOSE ) / 2  + 60 );
-    optionQuit.SetRect( Bkgmenu.GetRect().x  + (WIDTH_BG_MENU - WIDTH_CHOSE) / 2 -20 ,
-                               Bkgmenu.GetRect().y + (HEIGHT_BG_MENU   + HEIGHT_CHOSE ) / 2   ) ;
+
+
     bool is_quit = false ;
     bool is_play = false ;
-    int play_ = 1 , quit_ = 1 ;
+    int play_ = 1, quit_ = 1 ;
+    bool win = true ;
     Mix_PlayMusic(g_music, -1 );
     // Menu
     while( !is_quit ) {
@@ -146,6 +145,10 @@ int game()
             int x, y ;
             SDL_GetMouseState(&x, & y );
             // option 1
+            optionPlay.SetRect( Bkgmenu.GetRect().x + (WIDTH_BG_MENU - WIDTH_CHOSE) / 2 - 20,
+                                Bkgmenu.GetRect().y + (HEIGHT_BG_MENU /2  - HEIGHT_CHOSE ) / 2  + 60 );
+            optionQuit.SetRect( Bkgmenu.GetRect().x  + (WIDTH_BG_MENU - WIDTH_CHOSE) / 2 -20,
+                                Bkgmenu.GetRect().y + (HEIGHT_BG_MENU   + HEIGHT_CHOSE ) / 2   ) ;
             if(x >= optionPlay.GetRect().x && x <= optionPlay.GetRect().x + WIDTH_CHOSE &&
                     y >= optionPlay.GetRect().y && y <= optionPlay.GetRect().y + HEIGHT_CHOSE) {
                 play_ = 2 ;
@@ -160,43 +163,44 @@ int game()
             else if(x >= optionQuit.GetRect().x && x <= optionQuit.GetRect().x + WIDTH_CHOSE &&
                     y >= optionQuit.GetRect().y && y <= optionQuit.GetRect().y + HEIGHT_CHOSE ) {
                 quit_ = 2 ;
-               if(g_event.type == SDL_MOUSEBUTTONDOWN ) {
+                if(g_event.type == SDL_MOUSEBUTTONDOWN ) {
                     if( g_event.button.button == SDL_BUTTON_LEFT ) {
                         is_quit = true;
                     }
                 }
-            }
-            else {
+            } else {
                 play_ = 1 ;
                 quit_ = 1 ;
             }
         }
-            // render background
-            SDL_RenderClear(g_screen);
-            --scrollingOffset;
-            if(scrollingOffset < -SCREEN_HEIGHT ) scrollingOffset = 0 ;
-            background.SetRect(0, scrollingOffset );
-            background1.SetRect(0, scrollingOffset + SCREEN_HEIGHT );
-            background.Render( g_screen );
-            background1.Render( g_screen );
-            // bkg menu
-            Bkgmenu.LoadImg(LINK_BG_MENU, g_screen);
-            Bkgmenu.Render(g_screen);
-            // option
-            if(play_ == 1 )
+        // render background
+        SDL_RenderClear(g_screen);
+        --scrollingOffset;
+        if(scrollingOffset < -SCREEN_HEIGHT ) scrollingOffset = 0 ;
+        background.SetRect(0, scrollingOffset );
+        background1.SetRect(0, scrollingOffset + SCREEN_HEIGHT );
+        background.Render( g_screen );
+        background1.Render( g_screen );
+        // bkg menu
+        Bkgmenu.LoadImg(LINK_BG_MENU, g_screen);
+        Bkgmenu.Render(g_screen);
+        // option
+        if(play_ == 1 )
             optionPlay.LoadImg( "./img/play/batdau1.jpg", g_screen ) ;
-            else optionPlay.LoadImg("./img/play/batdau2.jpg", g_screen) ;
-            optionPlay.Render( g_screen ) ;
+        else optionPlay.LoadImg("./img/play/batdau2.jpg", g_screen) ;
+        optionPlay.Render( g_screen ) ;
 
-            if(quit_ == 1 )
+        if(quit_ == 1 )
             optionQuit.LoadImg( "./img/play/btnthoat1.jpg", g_screen );
-            else optionQuit.LoadImg("./img/play/btnthoat2.jpg" , g_screen) ;
-            optionQuit.Render( g_screen ) ;
-            //std::cout<<quit_<<std::endl ;
-            SDL_RenderPresent(g_screen);
-            SDL_Delay(20);
-        }
-        if( is_play == true ) {
+        else optionQuit.LoadImg("./img/play/btnthoat2.jpg", g_screen) ;
+        optionQuit.Render( g_screen ) ;
+        //std::cout<<quit_<<std::endl ;
+        SDL_RenderPresent(g_screen);
+        SDL_Delay(20);
+    }
+    bool playAgain = true ;
+    if( is_play == true ) {
+        while(playAgain) {
             // inittialize craft
             MainObject craft;
             // inittialize explosive
@@ -215,9 +219,12 @@ int game()
                 normal_chicks.push_back(copied);
             }
             // BaseObject
-
-            //initialize bossChick
-            //Threat* bossChick;
+            BaseObject heartOfMain[3] ;
+            const int widthHeart = 25 ;
+            for(int i = 0 ; i < 3; i++) {
+                heartOfMain[i].SetRect( i* widthHeart, 0);
+                heartOfMain[i].LoadImg("./img/craft/mang.png", g_screen) ;
+            }
 
             // initialize number of heart
             int heart = 3 ;
@@ -238,10 +245,15 @@ int game()
             g_font2.SetFont("./font/font1.otf", 20);
             //
             bool isQuit = false ;
+            bool exitFinalLoop = false ;
+            int star = 0 ;// represent of result
+
             while( !isQuit ) {
                 while (SDL_PollEvent(&g_event) != 0) {
                     if(g_event.type == SDL_QUIT) {
                         isQuit = true;
+                        playAgain = false ;
+                        exitFinalLoop = true ;
                     }
                     craft.HandleInputAction(g_event, g_normalBullet );
                 }
@@ -257,6 +269,11 @@ int game()
                 //render main and amo of main
                 craft.RenderMain(g_screen);
                 craft.RenderAmo(g_screen);
+
+                //render the hearts
+                for(int i = 0 ; i< heart ; i++ ) {
+                    heartOfMain[i].Render(g_screen);
+                }
 
                 //render text score
                 std::stringstream ss;
@@ -286,11 +303,6 @@ int game()
                                     if( heart > 0 ) {
                                         SDL_Delay(225);
                                         craft.SetRect((SCREEN_WIDTH - MAIN_WIDTH)/2, SCREEN_HEIGHT - MAIN_HEIGHT) ;
-                                    } else {
-                                        craft.Set_isMove(false );
-                                        Mix_PlayChannel(1, g_gameOver, 0);
-                                        SDL_Delay(200);
-                                        isQuit = true ;
                                     }
                                 }
                             }
@@ -308,11 +320,6 @@ int game()
                             if( heart > 0 ) {
                                 SDL_Delay(225);
                                 craft.SetRect((SCREEN_WIDTH - MAIN_WIDTH)/2, SCREEN_HEIGHT - MAIN_HEIGHT) ;
-                            } else {
-                                craft.Set_isMove(false );
-                                Mix_PlayChannel(1, g_gameOver, 0);
-                                SDL_Delay(200) ;
-                                isQuit = true ;
                             }
                         }
                         // check amo of craft and normal chick
@@ -335,16 +342,133 @@ int game()
                                 }
                             }
                         }
-                    if( p_copy->Get_isMove() == false )
-                    {
-                        normal_chicks[i].Free() ;
-                        p_copy = NULL ;// clear pointer to decrease data
-                    }
+                        if( p_copy->Get_isMove() == false ) {
+                            normal_chicks[i].Free() ;
+                            p_copy = NULL ;// clear pointer to decrease
+                        }
                     }
                 }
                 SDL_RenderPresent(g_screen);
-                SDL_Delay(25);// xu ly FPS
+                SDL_Delay(20);// xu ly FPS
+
+                if( score < 200 ) star = 1 ;
+                else if( score <= 360 ) star = 2 ;
+                else star = 3  ;
+
+                win = true ; // assigned again to check
+                if(heart > 0 ) {
+                    for(int i = 0 ; i < NUM_OF_NORMAL_Threat ; i++) {
+                        if(normal_chicks[i].GetTexture() != NULL ) {
+                            win = false ;
+                            break ;
+                        }
+                    }
+                } else {
+                    win = false ;
+                    craft.Set_isMove(false );
+                    Mix_PlayChannel(1, g_gameOver, 0);
+                    SDL_Delay(200);
+                    isQuit = true ;
+                }
+                if( win ) {
+                    isQuit = true ;
+                    SDL_Delay(200 ) ;
+                }
             }
-            close();
+            std::cout<<win<<std::endl ;
+            int playAgain_ = 1, exit_ = 1 ;
+
+            // render result: win or lose
+            BaseObject result ;
+            result.SetRect( (SCREEN_WIDTH - EDGE_RESULT ) /2, (SCREEN_HEIGHT - EDGE_RESULT ) / 2 ) ;
+            if( win ) result.LoadImg("./img/play/bgthangcuoc.png", g_screen );
+            else result.LoadImg("./img/play/bgthuacuoc.png", g_screen) ;
+
+            // render star
+            const int EDGE_STAR = 50 ;
+            BaseObject star_[3] ;
+            if(win ) {
+                for(int i = 0 ; i < star ; i++ ) {
+                    star_[i].SetRect(result.GetRect().x + i * EDGE_STAR + EDGE_RESULT/ 4, result.GetRect().y - EDGE_STAR ) ;
+                    star_[i].LoadImg("./img/play/goldStar.png", g_screen) ;
+                }
+                for(int i = 2 ; i > star - 1 ; i-- ) {
+                    star_[i].SetRect(result.GetRect().x + i * EDGE_STAR + EDGE_RESULT/ 4, result.GetRect().y - EDGE_STAR ) ;
+                    star_[i].LoadImg("./img/play/emptyStar.png", g_screen) ;
+                }
+            } else {
+                for(int i = 0 ; i < 3 ; i++ ) {
+                    star_[i].SetRect(result.GetRect().x + EDGE_RESULT/4 + i * EDGE_STAR, result.GetRect().y - EDGE_STAR );
+                    star_[i].LoadImg("./img/play/emptyStar.png", g_screen) ;
+                }
+            }
+
+            // loop
+            while( !exitFinalLoop ) {
+                while(SDL_PollEvent(&g_event) != 0 ) {
+                    if(g_event.type == SDL_QUIT) {
+                        exitFinalLoop = true;
+                        playAgain = false ;
+                    }
+                    int x, y ;
+                    SDL_GetMouseState(&x, & y );
+
+                    optionPlay.SetRect(result.GetRect().x + 55 , result.GetRect().y + 125 );
+                    optionQuit.SetRect(result.GetRect().x + 55 , result.GetRect().y + 180 );
+                    // option 1
+                    if(x >= optionPlay.GetRect().x && x <= optionPlay.GetRect().x + WIDTH_CHOSE &&
+                            y >= optionPlay.GetRect().y && y <= optionPlay.GetRect().y + HEIGHT_CHOSE) {
+                        playAgain_ = 2 ;
+                        if(g_event.type == SDL_MOUSEBUTTONDOWN ) {
+                            if(g_event.button.button == SDL_BUTTON_LEFT) {
+                                exitFinalLoop = true ;
+                            }
+                        }
+                    }
+                    // option 2
+                    else if(x >= optionQuit.GetRect().x && x <= optionQuit.GetRect().x + WIDTH_CHOSE &&
+                            y >= optionQuit.GetRect().y && y <= optionQuit.GetRect().y + HEIGHT_CHOSE ) {
+                        exit_ = 2 ;
+                        if(g_event.type == SDL_MOUSEBUTTONDOWN ) {
+                            if( g_event.button.button == SDL_BUTTON_LEFT ) {
+                                playAgain = false ;
+                                exitFinalLoop = true ;
+                            }
+                        }
+                    } else {
+                        exit_ = 1;
+                        playAgain_  = 1 ;
+                    }
+                }
+                // render background
+                SDL_RenderClear(g_screen);
+                --scrollingOffset;
+                if(scrollingOffset < -SCREEN_HEIGHT ) scrollingOffset = 0 ;
+                background.SetRect(0, scrollingOffset );
+                background1.SetRect(0, scrollingOffset + SCREEN_HEIGHT );
+                background.Render(g_screen );
+                background1.Render(g_screen );
+                // bkgenu
+                result.Render(g_screen) ;
+                // option
+                if(playAgain_ == 1 )
+                    optionPlay.LoadImg("./img/play/Again1.png", g_screen);
+                else optionPlay.LoadImg("./img/play/Again2.png", g_screen) ;
+                optionPlay.Render(g_screen) ;
+
+                if(exit_ == 1 ) optionQuit.LoadImg("./img/play/btnthoat1.jpg", g_screen);
+                else optionQuit.LoadImg("./img/play/btnthoat2.jpg", g_screen) ;
+                optionQuit.Render(g_screen) ;
+
+                // star
+                for(int i = 0 ; i < 3 ; i ++ ) {
+                    star_[i].Render(g_screen) ;
+                }
+
+                SDL_RenderPresent(g_screen) ;
+                SDL_Delay(40) ;
+            }
         }
     }
+    close();
+}
