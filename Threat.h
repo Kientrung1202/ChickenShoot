@@ -15,7 +15,6 @@ const std::string LINK_CHICK_NORMAL[] = {"./img/chick/ga0.png","./img/chick/ga1.
 const std :: string LINK_NORMAL_EGG_BROKEN[] = {"./img/trungvo/trungvo0.png", "./img/trungvo/trungvo1.png",
                                                             "./img/trungvo/trungvo2.png", "./img/trungvo/trungvo3.png"};
 const std::string LINK_NORMAL_EGG = "./img/trung.png";
-const std::string LINK_BOSS_EGG = "";
 
 #define NORMAL_CHICK_WIDTH 85
 #define NORMAL_CHICK_HEIGHT 64

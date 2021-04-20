@@ -16,6 +16,9 @@
 const std:: string LINK_MAIN_OBJ[3] ={ "./img/craft/craftLeft.png", "./img/craft/craftCenter.png", "./img/craft/craftRight.png" };
 const int max_died_of_main = 5 ;
 
+const std::string LINK_HEART = "./img/craft/mang.png" ;
+const int WIDTH_HEART = 25 ;
+
 class MainObject: public BaseObject
 {
 public:

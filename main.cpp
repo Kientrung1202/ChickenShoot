@@ -106,7 +106,6 @@ void close()
     g_craftBroken = NULL ;
     Mix_Quit();
 
-    TTF_CloseFont(g_font);
     TTF_Quit();
 
     IMG_Quit();
@@ -122,8 +121,8 @@ int game()
     BaseObject background ;
     BaseObject background1 ;
     int scrollingOffset = 0;
-    background.LoadImg("./img/background.jpg",g_screen);
-    background1.LoadImg("./img/background.jpg",g_screen);
+    background.LoadImg(LINK_BACK_GROUND ,g_screen);
+    background1.LoadImg(LINK_BACK_GROUND ,g_screen);
     //backgroundMenu
     BaseObject Bkgmenu;
     Bkgmenu.SetRect( (SCREEN_WIDTH - WIDTH_BG_MENU) / 2, (SCREEN_HEIGHT - HEIGHT_BG_MENU ) / 2);
@@ -133,7 +132,7 @@ int game()
 
     bool is_quit = false ;
     bool is_play = false ;
-    int play_ = 1, quit_ = 1 ;
+    int play_ = 0 , quit_ = 0 ;
     bool win = true ;
     Mix_PlayMusic(g_music, -1 );
     // Menu
@@ -147,11 +146,11 @@ int game()
             // option 1
             optionPlay.SetRect( Bkgmenu.GetRect().x + (WIDTH_BG_MENU - WIDTH_CHOSE) / 2 - 20,
                                 Bkgmenu.GetRect().y + (HEIGHT_BG_MENU /2  - HEIGHT_CHOSE ) / 2  + 60 );
-            optionQuit.SetRect( Bkgmenu.GetRect().x  + (WIDTH_BG_MENU - WIDTH_CHOSE) / 2 -20,
+            optionQuit.SetRect( Bkgmenu.GetRect().x  + (WIDTH_BG_MENU - WIDTH_CHOSE) / 2 -20 ,
                                 Bkgmenu.GetRect().y + (HEIGHT_BG_MENU   + HEIGHT_CHOSE ) / 2   ) ;
             if(x >= optionPlay.GetRect().x && x <= optionPlay.GetRect().x + WIDTH_CHOSE &&
                     y >= optionPlay.GetRect().y && y <= optionPlay.GetRect().y + HEIGHT_CHOSE) {
-                play_ = 2 ;
+                play_ = 1 ;
                 if(g_event.type == SDL_MOUSEBUTTONDOWN ) {
                     if(g_event.button.button == SDL_BUTTON_LEFT) {
                         is_play = true;
@@ -162,15 +161,15 @@ int game()
             // option 2
             else if(x >= optionQuit.GetRect().x && x <= optionQuit.GetRect().x + WIDTH_CHOSE &&
                     y >= optionQuit.GetRect().y && y <= optionQuit.GetRect().y + HEIGHT_CHOSE ) {
-                quit_ = 2 ;
+                quit_ = 1 ;
                 if(g_event.type == SDL_MOUSEBUTTONDOWN ) {
                     if( g_event.button.button == SDL_BUTTON_LEFT ) {
                         is_quit = true;
                     }
                 }
             } else {
-                play_ = 1 ;
-                quit_ = 1 ;
+                play_ = 0 ;
+                quit_ = 0 ;
             }
         }
         // render background
@@ -185,14 +184,10 @@ int game()
         Bkgmenu.LoadImg(LINK_BG_MENU, g_screen);
         Bkgmenu.Render(g_screen);
         // option
-        if(play_ == 1 )
-            optionPlay.LoadImg( "./img/play/batdau1.jpg", g_screen ) ;
-        else optionPlay.LoadImg("./img/play/batdau2.jpg", g_screen) ;
+        optionPlay.LoadImg( LINK_CHOSE_PLAY[play_] , g_screen ) ;
         optionPlay.Render( g_screen ) ;
 
-        if(quit_ == 1 )
-            optionQuit.LoadImg( "./img/play/btnthoat1.jpg", g_screen );
-        else optionQuit.LoadImg("./img/play/btnthoat2.jpg", g_screen) ;
+        optionQuit.LoadImg(LINK_CHOSE_QUIT[quit_], g_screen) ;
         optionQuit.Render( g_screen ) ;
         //std::cout<<quit_<<std::endl ;
         SDL_RenderPresent(g_screen);
@@ -220,29 +215,27 @@ int game()
             }
             // BaseObject
             BaseObject heartOfMain[3] ;
-            const int widthHeart = 25 ;
             for(int i = 0 ; i < 3; i++) {
-                heartOfMain[i].SetRect( i* widthHeart, 0);
-                heartOfMain[i].LoadImg("./img/craft/mang.png", g_screen) ;
+                heartOfMain[i].SetRect( i* WIDTH_HEART , 0);
+                heartOfMain[i].LoadImg( LINK_HEART, g_screen ) ;
             }
 
             // initialize number of heart
             int heart = 3 ;
             int score = 0;
-            int died_of_boss = 0;
             int died_of_normal_chick[NUM_OF_NORMAL_Threat] = {0};
 
             // font
-            Font g_font ;
-            g_font.SetRect(SCREEN_WIDTH - 75 * 2,0, 75, 75 );
-            g_font.SetColor(255, 0,255);
-            g_font.SetFont("./font/font1.otf", 20 );
-            g_font.LoadTexture("Score: ", g_screen);
+            Font g_font1 ;
+            g_font1.SetRect(SCREEN_WIDTH - 75 * 2,0, 75, 75 );
+            g_font1.SetColor(255, 0,255);
+            g_font1.SetFont(LINK_FONT_1, 20 );
+            g_font1.LoadTexture("Score: ", g_screen);
 
             Font g_font2 ;
             g_font2.SetRect( SCREEN_WIDTH - 75, 0, 75, 75 );
             g_font2.SetColor(255, 0,255);
-            g_font2.SetFont("./font/font1.otf", 20);
+            g_font2.SetFont (LINK_FONT_1 , 20);
             //
             bool isQuit = false ;
             bool exitFinalLoop = false ;
@@ -279,7 +272,7 @@ int game()
                 std::stringstream ss;
                 ss << score ;
                 g_font2.LoadTexture(ss.str().c_str(), g_screen);
-                g_font.RenderText(g_screen);
+                g_font1.RenderText(g_screen);
                 g_font2.RenderText(g_screen);
                 //render normal chick and check colision
                 for(int i = 0; i < NUM_OF_NORMAL_Threat ; i++) {
@@ -324,7 +317,7 @@ int game()
                         }
                         // check amo of craft and normal chick
                         std::vector<AmoObject*> amoOfCraft = craft.GetAmo();
-                        for(int j = 0; j < amoOfCraft.size() ; j++ ) {
+                        for(long long unsigned int j = 0; j < amoOfCraft.size() ; j++ ) {
                             bool ret3 = CheckCollision(p_copy->GetColliders(), amoOfCraft[j]->GetColliders() );
                             if(ret3) {
                                 amoOfCraft[j]->Free();
@@ -375,14 +368,14 @@ int game()
                     SDL_Delay(200 ) ;
                 }
             }
-            std::cout<<win<<std::endl ;
-            int playAgain_ = 1, exit_ = 1 ;
+
+            int playAgain_ = 0, exit_ = 0 ;
 
             // render result: win or lose
             BaseObject result ;
             result.SetRect( (SCREEN_WIDTH - EDGE_RESULT ) /2, (SCREEN_HEIGHT - EDGE_RESULT ) / 2 ) ;
-            if( win ) result.LoadImg("./img/play/bgthangcuoc.png", g_screen );
-            else result.LoadImg("./img/play/bgthuacuoc.png", g_screen) ;
+            if( win ) result.LoadImg(LINK_WIN_GAME , g_screen );
+            else result.LoadImg(LINK_LOSE_GAME , g_screen) ;
 
             // render star
             const int EDGE_STAR = 50 ;
@@ -390,21 +383,23 @@ int game()
             if(win ) {
                 for(int i = 0 ; i < star ; i++ ) {
                     star_[i].SetRect(result.GetRect().x + i * EDGE_STAR + EDGE_RESULT/ 4, result.GetRect().y - EDGE_STAR ) ;
-                    star_[i].LoadImg("./img/play/goldStar.png", g_screen) ;
+                    star_[i].LoadImg( LINK_GOLD_STAR, g_screen) ;
                 }
                 for(int i = 2 ; i > star - 1 ; i-- ) {
                     star_[i].SetRect(result.GetRect().x + i * EDGE_STAR + EDGE_RESULT/ 4, result.GetRect().y - EDGE_STAR ) ;
-                    star_[i].LoadImg("./img/play/emptyStar.png", g_screen) ;
+                    star_[i].LoadImg(LINK_EMPTY_STAR , g_screen) ;
                 }
             } else {
                 for(int i = 0 ; i < 3 ; i++ ) {
                     star_[i].SetRect(result.GetRect().x + EDGE_RESULT/4 + i * EDGE_STAR, result.GetRect().y - EDGE_STAR );
-                    star_[i].LoadImg("./img/play/emptyStar.png", g_screen) ;
+                    star_[i].LoadImg(LINK_EMPTY_STAR , g_screen) ;
                 }
             }
 
             // loop
             while( !exitFinalLoop ) {
+                optionPlay.SetRect(result.GetRect().x + 55 , result.GetRect().y + 125 );
+                optionQuit.SetRect(result.GetRect().x + 55 , result.GetRect().y + 180 );
                 while(SDL_PollEvent(&g_event) != 0 ) {
                     if(g_event.type == SDL_QUIT) {
                         exitFinalLoop = true;
@@ -412,13 +407,10 @@ int game()
                     }
                     int x, y ;
                     SDL_GetMouseState(&x, & y );
-
-                    optionPlay.SetRect(result.GetRect().x + 55 , result.GetRect().y + 125 );
-                    optionQuit.SetRect(result.GetRect().x + 55 , result.GetRect().y + 180 );
                     // option 1
                     if(x >= optionPlay.GetRect().x && x <= optionPlay.GetRect().x + WIDTH_CHOSE &&
                             y >= optionPlay.GetRect().y && y <= optionPlay.GetRect().y + HEIGHT_CHOSE) {
-                        playAgain_ = 2 ;
+                        playAgain_ = 1 ;
                         if(g_event.type == SDL_MOUSEBUTTONDOWN ) {
                             if(g_event.button.button == SDL_BUTTON_LEFT) {
                                 exitFinalLoop = true ;
@@ -428,7 +420,7 @@ int game()
                     // option 2
                     else if(x >= optionQuit.GetRect().x && x <= optionQuit.GetRect().x + WIDTH_CHOSE &&
                             y >= optionQuit.GetRect().y && y <= optionQuit.GetRect().y + HEIGHT_CHOSE ) {
-                        exit_ = 2 ;
+                        exit_ = 1 ;
                         if(g_event.type == SDL_MOUSEBUTTONDOWN ) {
                             if( g_event.button.button == SDL_BUTTON_LEFT ) {
                                 playAgain = false ;
@@ -436,8 +428,8 @@ int game()
                             }
                         }
                     } else {
-                        exit_ = 1;
-                        playAgain_  = 1 ;
+                        exit_ = 0;
+                        playAgain_  = 0 ;
                     }
                 }
                 // render background
@@ -451,13 +443,10 @@ int game()
                 // bkgenu
                 result.Render(g_screen) ;
                 // option
-                if(playAgain_ == 1 )
-                    optionPlay.LoadImg("./img/play/Again1.png", g_screen);
-                else optionPlay.LoadImg("./img/play/Again2.png", g_screen) ;
+                optionPlay.LoadImg(LINK_CHOSE_PLAY_AGAIN[playAgain_], g_screen) ;
                 optionPlay.Render(g_screen) ;
 
-                if(exit_ == 1 ) optionQuit.LoadImg("./img/play/btnthoat1.jpg", g_screen);
-                else optionQuit.LoadImg("./img/play/btnthoat2.jpg", g_screen) ;
+                optionQuit.LoadImg(LINK_CHOSE_QUIT[exit_] , g_screen) ;
                 optionQuit.Render(g_screen) ;
 
                 // star
@@ -471,4 +460,5 @@ int game()
         }
     }
     close();
+    return 0 ;
 }

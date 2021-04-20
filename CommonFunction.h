@@ -13,8 +13,10 @@ const int SCREEN_WIDTH = 1000;
 const int SCREEN_HEIGHT = 675 ;
 const int SCREEN_BPP = 32;
 
-const std::string SCREEN_TITLE = "NGUYEN KIEN TRUNG";
+const std::string SCREEN_TITLE = "NGUYEN KIEN TRUNG - 20020489 ";
 const int COLOR_RENDER = 255;
+
+const std::string LINK_BACK_GROUND = "./img/background.jpg" ;
 
 static SDL_Renderer* g_screen = NULL;
 static SDL_Window* g_window = NULL;
@@ -26,7 +28,6 @@ static Mix_Chunk* g_normalChickenDied ;
 static Mix_Chunk* g_normalChickHitted;
 static Mix_Chunk* g_craftBroken ;
 static Mix_Chunk* g_gameOver ;
-static TTF_Font* g_font ;
 
 const int COLOR_KEY_R = 255 ;
 const int COLOR_KEY_B = 255 ;
