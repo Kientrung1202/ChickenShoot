@@ -5,7 +5,7 @@ Use key up, down, left, right to move the air craft
 
 Use mouse button left to shoot the bullet
 
-Your score will decided the number of star you received
+Your score will decide the number of star you receive
 
 ***
 
