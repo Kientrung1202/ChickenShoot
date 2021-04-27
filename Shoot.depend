@@ -1,8 +1,13 @@
 # depslib dependency file v1.0
-1617785529 source:c:\users\admin\onedrive\máy tính\chickenshoot\shoot\commonfunction.cpp
-	"CommonFunction.h"
+1617787428 source:c:\users\admin\onedrive\máy tính\chickenshoot\shoot\amo.cpp
+	"Amo.h"
 
-1618155953 c:\users\admin\onedrive\máy tính\chickenshoot\shoot\commonfunction.h
+1617957095 c:\users\admin\onedrive\máy tính\chickenshoot\shoot\amo.h
+	"CommonFunction.h"
+	"BaseObject.h"
+	<vector>
+
+1618894227 c:\users\admin\onedrive\máy tính\chickenshoot\shoot\commonfunction.h
 	<SDL.h>
 	<SDL_image.h>
 	<windows.h>
@@ -11,7 +16,30 @@
 	<SDL_ttf.h>
 	<vector>
 
-1618502936 source:c:\users\admin\onedrive\máy tính\chickenshoot\shoot\main.cpp
+1618055526 c:\users\admin\onedrive\máy tính\chickenshoot\shoot\baseobject.h
+	"CommonFunction.h"
+
+1618503363 source:c:\users\admin\onedrive\máy tính\chickenshoot\shoot\baseobject.cpp
+	"BaseObject.h"
+
+1617785529 source:c:\users\admin\onedrive\máy tính\chickenshoot\shoot\commonfunction.cpp
+	"CommonFunction.h"
+
+1618894713 source:c:\users\admin\onedrive\máy tính\chickenshoot\shoot\explosive.cpp
+	"Explosive.h"
+
+1617957950 c:\users\admin\onedrive\máy tính\chickenshoot\shoot\explosive.h
+	"CommonFunction.h"
+	"BaseObject.h"
+
+1618162126 source:c:\users\admin\onedrive\máy tính\chickenshoot\shoot\font.cpp
+	"Font.h"
+
+1618893525 c:\users\admin\onedrive\máy tính\chickenshoot\shoot\font.h
+	"CommonFunction.h"
+	"BaseObject.h"
+
+1618895077 source:c:\users\admin\onedrive\máy tính\chickenshoot\shoot\main.cpp
 	"BaseObject.h"
 	"CommonFunction.h"
 	"MainObject.h"
@@ -24,35 +52,13 @@
 	<vector>
 	<sstream>
 
-1618055526 c:\users\admin\onedrive\máy tính\chickenshoot\shoot\baseobject.h
-	"CommonFunction.h"
-
-1618503363 source:c:\users\admin\onedrive\máy tính\chickenshoot\shoot\baseobject.cpp
-	"BaseObject.h"
-
-1616206428 source:c:\users\admin\onedrive\máy tính\chickenshoot\shoot\map.cpp
-
-1617814758 source:c:\users\admin\onedrive\máy tính\chickenshoot\shoot\mainobject.cpp
-	"MainObject.h"
-
-1617787428 source:c:\users\admin\onedrive\máy tính\chickenshoot\shoot\amo.cpp
-	"Amo.h"
-
-1617957095 c:\users\admin\onedrive\máy tính\chickenshoot\shoot\amo.h
-	"CommonFunction.h"
-	"BaseObject.h"
-	<vector>
-
-1617979546 c:\users\admin\onedrive\máy tính\chickenshoot\shoot\mainobject.h
+1618892526 c:\users\admin\onedrive\máy tính\chickenshoot\shoot\mainobject.h
 	"BaseObject.h"
 	"Amo.h"
 	"CommonFunction.h"
 	<vector>
 
-1618147812 source:c:\users\admin\onedrive\máy tính\chickenshoot\shoot\threat.cpp
-	"Threat.h"
-
-1618497629 c:\users\admin\onedrive\máy tính\chickenshoot\shoot\threat.h
+1618894555 c:\users\admin\onedrive\máy tính\chickenshoot\shoot\threat.h
 	"CommonFunction.h"
 	"BaseObject.h"
 	"Amo.h"
@@ -60,31 +66,16 @@
 	<time.h>
 	<vector>
 
-1618286789 source:c:\users\admin\onedrive\máy tính\chickenshoot\shoot\explosive.cpp
-	"Explosive.h"
-
-1617957950 c:\users\admin\onedrive\máy tính\chickenshoot\shoot\explosive.h
+1618892302 c:\users\admin\onedrive\máy tính\chickenshoot\shoot\menu.h
 	"CommonFunction.h"
 	"BaseObject.h"
 
-1617964414 source:c:\users\admin\onedrive\máy tính\chickenshoot\shoot\backgroundmenu.cpp
-	"BackGroundMenu.h"
-
-1617965609 c:\users\admin\onedrive\máy tính\chickenshoot\shoot\backgroundmenu.h
-	"CommonFunction.h"
-	"BaseObject.h"
+1617814758 source:c:\users\admin\onedrive\máy tính\chickenshoot\shoot\mainobject.cpp
+	"MainObject.h"
 
 1618331329 source:c:\users\admin\onedrive\máy tính\chickenshoot\shoot\menu.cpp
 	"Menu.h"
 
-1618479196 c:\users\admin\onedrive\máy tính\chickenshoot\shoot\menu.h
-	"CommonFunction.h"
-	"BaseObject.h"
-
-1618162126 source:c:\users\admin\onedrive\máy tính\chickenshoot\shoot\font.cpp
-	"Font.h"
-
-1618162076 c:\users\admin\onedrive\máy tính\chickenshoot\shoot\font.h
-	"CommonFunction.h"
-	"BaseObject.h"
+1618147812 source:c:\users\admin\onedrive\máy tính\chickenshoot\shoot\threat.cpp
+	"Threat.h"
 
